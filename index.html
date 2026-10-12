@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Md Shahin Ali | Dynamic MRI Reconstruction, University of Iowa</title>
+<meta name="description" content="Md Shahin Ali is a PhD candidate in the Roy J. Carver Department of Biomedical Engineering at the University of Iowa developing self-supervised deep learning methods for accelerated dynamic upper-airway MRI in obstructive sleep apnea. Seeking a Summer 2027 MRI image reconstruction internship.">
+<meta name="author" content="Md Shahin Ali">
+<meta property="og:title" content="Md Shahin Ali | Dynamic MRI Reconstruction">
+<meta property="og:description" content="PhD candidate, University of Iowa. Self-supervised reconstruction for real-time upper-airway MRI in sleep apnea.">
+<meta property="og:image" content="gallery/profile_headshot.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧲</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Md Shahin Ali","jobTitle":"PhD Candidate, Roy J. Carver Department of Biomedical Engineering","image":"gallery/profile_headshot.jpg","affiliation":{"@type":"CollegeOrUniversity","name":"The University of Iowa"},"email":"mailto:mdshahin-ali@uiowa.edu","sameAs":["https://scholar.google.com/citations?user=R35Lm8YAAAAJ","https://orcid.org/0000-0003-2564-8746","https://www.linkedin.com/in/md-shahin-ali/","https://www.researchgate.net/profile/Md-Ali-177","https://www.webofscience.com/wos/author/record/AEV-7853-2022","https://www.scopus.com/authid/detail.uri?authorId=57225851312"]}
+</script>
+<style>
+:root{
+  --paper:#F3F5F4; --surface:#FFFFFF; --ink:#18202B; --muted:#56616D; --rule:#D3DAD8;
+  --link:#1D5C63; --gold:#FFCD00; --hero:#0E141B; --hero-ink:#E9EEF1; --hero-muted:#8C99A5;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#10151B;--surface:#161D25;--ink:#E5EBEF;--muted:#9AA6B1;--rule:#2A343F;--link:#7FC8CC;}
+}
+:root[data-theme="dark"]{--paper:#10151B;--surface:#161D25;--ink:#E5EBEF;--muted:#9AA6B1;--rule:#2A343F;--link:#7FC8CC;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.62;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+a{color:var(--link);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+img{max-width:100%}
+
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;width:100%;background:var(--gold);transform-origin:0 50%;transform:scaleX(0);z-index:40}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top,0px);background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.nav-in{max-width:1160px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:20px}
+.brand{font-family:var(--sans);font-weight:700;font-variation-settings:"wdth" 80;font-size:20px;color:var(--ink);text-decoration:none;letter-spacing:-.01em;white-space:nowrap}
+.nav ul{list-style:none;display:flex;gap:2px;margin:0 0 0 auto;padding:0;overflow-x:auto;scrollbar-width:none}
+.nav ul::-webkit-scrollbar{display:none}
+.nav ul a{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:15px;color:var(--muted);text-decoration:none;padding:6px 9px;border-radius:6px;white-space:nowrap;transition:color .2s,background .2s}
+.nav ul a:hover,.nav ul a.on{color:var(--ink);background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.theme{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;font-size:16px;display:grid;place-items:center}
+
+/* hero */
+.hero{background:var(--hero);color:var(--hero-ink);overflow:hidden;position:relative}
+.hero-in{max-width:1160px;margin:0 auto;padding:56px 24px 60px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);gap:56px;align-items:center}
+.seek{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:14.5px;font-weight:600;color:#16130A;background:var(--gold);padding:7px 14px 7px 12px;border-radius:999px;text-decoration:none;margin-bottom:26px}
+.seek .dot{width:9px;height:9px;border-radius:50%;background:#16130A;position:relative}
+.seek .dot::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:2px solid #16130A;animation:ping 1.8s ease-out infinite}
+@keyframes ping{0%{transform:scale(.4);opacity:.9}100%{transform:scale(1.4);opacity:0}}
+.idrow{display:flex;align-items:center;gap:22px;margin-bottom:22px}
+.avatar{position:relative;width:136px;height:136px;flex:none}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:50% 25%;position:relative;z-index:1;border:3px solid var(--hero)}
+.avatar::before{content:"";position:absolute;inset:-3px;border-radius:50%;background:var(--gold)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero h1{font-family:var(--sans);font-weight:800;font-variation-settings:"wdth" 72;font-size:clamp(34px,4.6vw,62px);line-height:1;letter-spacing:-.02em;margin:0;white-space:nowrap}
+.role{font-family:var(--sans);font-size:16.5px;color:var(--hero-muted);margin:0 0 18px;line-height:1.5}
+.role b{color:var(--hero-ink);font-weight:600}
+.role a{color:var(--hero-ink);text-decoration-color:var(--gold)}
+.role a:hover{color:var(--gold)}
+.pitch{font-size:21px;line-height:1.5;max-width:30em;margin:0 0 14px}
+.ticker{font-family:var(--sans);font-size:16px;color:var(--hero-muted);margin:0 0 28px;display:flex;gap:8px;align-items:baseline}
+.ticker .win{display:inline-block;height:1.5em;overflow:hidden;vertical-align:bottom}
+.ticker .tl{display:block;animation:tick 15s cubic-bezier(.7,0,.3,1) infinite}
+.ticker .tl span{display:block;height:1.5em;line-height:1.5em;color:var(--gold);font-weight:600}
+@keyframes tick{0%,16%{transform:translateY(0)}20%,36%{transform:translateY(-1.5em)}40%,56%{transform:translateY(-3em)}60%,76%{transform:translateY(-4.5em)}80%,96%{transform:translateY(-6em)}100%{transform:translateY(-7.5em)}}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.btn{font-family:var(--sans);font-weight:600;font-size:15px;padding:11px 18px;border-radius:999px;text-decoration:none;border:1px solid transparent;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{background:var(--gold);color:#16130A}
+.btn.ghost{border-color:#3A4652;color:var(--hero-ink)}
+.btn.ghost:hover{background:#1B2530}
+.profiles{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.profiles a{width:52px;height:52px;border-radius:12px;background:#fff;display:grid;place-items:center;padding:8px;transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+.profiles a.wide{width:auto;padding:8px 12px}
+.profiles a:hover{transform:translateY(-4px) scale(1.06);box-shadow:0 8px 22px rgba(255,205,0,.25)}
+.profiles img{max-height:34px;width:auto;display:block}
+.profiles a.wide img{max-height:30px}
+.profiles a span.fb{font-family:var(--sans);font-size:13px;font-weight:600;color:#18202B;white-space:nowrap}
+
+.scope{position:relative}
+.scope-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center}
+.flow{width:44px}
+.flow svg{width:100%;display:block;overflow:visible}
+.flow path{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.flow .shaft{stroke-dasharray:5 5;animation:flow 0.9s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-10}}
+.panel{background:#000;border:1px solid #222D38;border-radius:14px;aspect-ratio:1;position:relative;overflow:hidden}
+.panel canvas{width:100%;height:100%;display:block}
+.panel img{position:absolute;inset:7%;width:86%;height:86%;object-fit:contain}
+.readout{display:flex;justify-content:space-between;gap:12px;font-family:var(--sans);font-size:13.5px;color:var(--hero-muted);margin-top:12px;flex-wrap:wrap}
+.readout b{color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
+.scope p{font-size:15px;color:var(--hero-muted);line-height:1.55;margin:12px 0 0}
+.load{opacity:0;transform:translateY(16px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.load.d1{animation-delay:.05s}.load.d2{animation-delay:.2s}.load.d3{animation-delay:.35s}.load.d4{animation-delay:.5s}.load.d5{animation-delay:.65s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* sections */
+main{max-width:1160px;margin:0 auto;padding:0 24px}
+section{padding:88px 0 8px}
+.sec-head{display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:baseline}
+h2{font-family:var(--sans);font-weight:700;font-variation-settings:"wdth" 85;font-size:34px;letter-spacing:-.015em;line-height:1.1;margin:0}
+.sec-body{min-width:0}
+.lede{font-size:21px;line-height:1.55;margin:0 0 20px;max-width:36em}
+p{max-width:40em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
+.chips li{font-family:var(--sans);font-size:14px;padding:5px 12px;border:1px solid var(--rule);border-radius:999px;color:var(--muted);transition:border-color .2s,color .2s}
+.chips li:hover{border-color:var(--gold);color:var(--ink)}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:26px 0 24px;max-width:860px}
+.cmp{border-radius:12px;padding:20px 22px;border:1px solid var(--rule);background:var(--surface)}
+.cmp.new{border:2px solid var(--gold)}
+.cmp h3{font-family:var(--sans);font-size:17px;font-weight:650;margin:0 0 10px;line-height:1.3}
+.cmp ul{list-style:none;margin:0;padding:0}
+.cmp li{font-size:16px;padding:4px 0 4px 26px;position:relative;line-height:1.45}
+.cmp.old li::before{content:"✕";position:absolute;left:2px;top:4px;color:var(--muted);font-family:var(--sans);font-size:14px}
+.cmp.new li::before{content:"✓";position:absolute;left:2px;top:3px;color:#B38F00;font-family:var(--sans);font-weight:700}
+:root[data-theme="dark"] .cmp.new li::before{color:var(--gold)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cmp.new li::before{color:var(--gold)}}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:32px}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:24px 26px;transition:transform .3s,box-shadow .3s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 30px color-mix(in srgb,var(--ink) 10%,transparent)}
+.card.now{border-left:4px solid var(--gold)}
+.card h3{font-family:var(--sans);font-size:19px;font-weight:650;margin:0 0 4px;line-height:1.3}
+.card .meta{font-family:var(--sans);font-size:14px;color:var(--muted);margin:0 0 12px}
+.card p{font-size:16.5px;margin:0 0 10px}
+
+/* timelines */
+.timeline{list-style:none;margin:0;padding:0 0 0 22px;position:relative}
+.timeline::before{content:"";position:absolute;left:4px;top:8px;bottom:8px;width:2px;background:var(--rule)}
+.timeline::after{content:"";position:absolute;left:4px;top:8px;width:2px;height:var(--grow,0%);max-height:calc(100% - 16px);background:var(--gold)}
+.timeline>li{position:relative;padding:0 0 24px 18px}
+.timeline>li::before{content:"";position:absolute;left:-23px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--gold);transition:background .4s}
+.timeline>li.in::before{background:var(--gold)}
+.when{font-family:var(--sans);font-size:14px;color:var(--muted);display:block}
+.what{font-size:18px;display:block}
+.timeline h3{font-family:var(--sans);font-size:18.5px;font-weight:650;margin:0;line-height:1.35}
+.timeline .org{font-size:16.5px;margin:0}
+.timeline .note{font-size:15.5px;color:var(--muted);margin:4px 0 0}
+
+/* publications */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.filters button{font-family:var(--sans);font-size:14.5px;padding:7px 14px;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.count{font-family:var(--sans);font-size:14px;color:var(--muted);margin:8px 0 18px}
+.pubs{list-style:none;margin:0;padding:0}
+.pub{padding:18px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:64px 1fr;gap:18px;transition:opacity .35s,transform .35s}
+.pub.hide{display:none}
+.pub.enter{opacity:0;transform:translateX(-8px)}
+.yr{font-family:var(--sans);font-weight:700;font-variation-settings:"wdth" 75;font-size:22px;color:var(--muted);line-height:1.2}
+.pub .ttl{font-weight:600;font-size:17.5px;line-height:1.45;margin:0 0 4px}
+.pub .au{font-size:15.5px;color:var(--muted);margin:0 0 4px;line-height:1.5}
+.pub .au b{color:var(--ink);font-weight:600}
+.pub .ven{font-size:15.5px;margin:0;font-style:italic}
+.badge{font-family:var(--sans);font-style:normal;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:999px;margin-left:6px;vertical-align:2px;background:color-mix(in srgb,var(--gold) 35%,transparent);color:var(--ink)}
+.pub a.doi{font-family:var(--sans);font-style:normal;font-size:14px;margin-left:6px}
+
+/* lists */
+.list{list-style:none;margin:0;padding:0}
+.list li{padding:14px 0;border-top:1px solid var(--rule);display:grid;grid-template-columns:110px 1fr;gap:18px}
+.list .d{font-family:var(--sans);font-size:14.5px;color:var(--muted)}
+.list .t{font-size:17px}
+.list .t small{display:block;color:var(--muted);font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+h3.small{font-family:var(--sans);font-size:18px;font-weight:650;margin:0 0 12px}
+.plain{margin:0;padding-left:18px}
+.plain li{margin:0 0 6px;font-size:16.5px}
+
+/* reviewer marquee */
+.marquee{margin-top:36px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);overflow:hidden;padding:14px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-label{font-family:var(--sans);font-size:14px;color:var(--muted);margin:36px 0 0}
+.track{display:flex;gap:40px;width:max-content;animation:slide 45s linear infinite}
+.marquee:hover .track{animation-play-state:paused}
+.track span{font-family:var(--sans);font-size:17px;font-weight:600;white-space:nowrap;color:var(--ink)}
+.track span::after{content:"✦";color:var(--gold);margin-left:40px;font-size:13px}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* gallery */
+.gfilters{margin-bottom:18px}
+.grid{columns:3 240px;column-gap:14px}
+.grid figure{margin:0 0 14px;break-inside:avoid;position:relative;border-radius:10px;overflow:hidden;cursor:zoom-in;background:var(--rule)}
+.grid figure.hide{display:none}
+.grid img{width:100%;display:block;transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .4s}
+.grid figure:hover img{transform:scale(1.06)}
+.grid figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 12px 10px;font-family:var(--sans);font-size:13.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.72));transform:translateY(100%);transition:transform .35s}
+.grid figure:hover figcaption,.grid figure:focus-within figcaption{transform:none}
+.grid button{all:unset;display:block;cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(5,8,12,.92);display:none;align-items:center;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 20px calc(20px + env(safe-area-inset-bottom,0px))}
+.lightbox.open{display:flex;animation:fade .25s ease}
+@keyframes fade{from{opacity:0}}
+.lightbox figure{margin:0;max-width:min(92vw,1000px);text-align:center}
+.lightbox img{max-height:78vh;border-radius:8px;animation:zoom .3s cubic-bezier(.2,.7,.2,1)}
+@keyframes zoom{from{transform:scale(.94);opacity:0}}
+.lightbox figcaption{font-family:var(--sans);color:#D9E1E6;font-size:15px;margin-top:10px}
+.lb-btn{position:absolute;background:rgba(255,255,255,.1);color:#fff;border:0;width:46px;height:46px;border-radius:50%;font-size:22px;cursor:pointer;display:grid;place-items:center}
+.lb-btn:hover{background:rgba(255,205,0,.85);color:#16130A}
+.lb-prev{left:16px;top:50%}.lb-next{right:16px;top:50%}
+.lb-close{right:16px;top:calc(16px + env(safe-area-inset-top,0px))}
+
+/* contact */
+.contact{padding-bottom:40px}
+.hire{background:var(--hero);color:var(--hero-ink);border-radius:16px;padding:30px 32px;margin:0 0 36px;position:relative;overflow:hidden}
+.hire::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:2px dashed rgba(255,205,0,.35);animation:spin 24s linear infinite}
+.hire h3{font-family:var(--sans);font-size:24px;font-weight:700;font-variation-settings:"wdth" 85;margin:0 0 10px;color:var(--gold)}
+.hire p{margin:0 0 10px;font-size:17px;max-width:40em}
+.hire ul{margin:6px 0 0;padding-left:20px;font-size:16.5px}
+.hire li{margin-bottom:4px}
+.addr{max-width:none!important;white-space:nowrap}
+@media (max-width:700px){.addr{white-space:normal}}
+.big-mail{font-family:var(--sans);font-weight:700;font-variation-settings:"wdth" 78;font-size:clamp(26px,4.5vw,46px);letter-spacing:-.015em;color:var(--ink);text-decoration:none;display:inline-block;border-bottom:3px solid var(--gold);line-height:1.15;word-break:break-all}
+.contact .profiles a{background:#fff;border:1px solid var(--rule)}
+.visitors{margin-top:36px}
+.visitors:has(.vbox:empty){display:none}
+.vbox img{max-width:100%;height:auto}
+footer{border-top:1px solid var(--rule);margin-top:64px;padding:24px;text-align:center;font-family:var(--sans);font-size:14px;color:var(--muted)}
+
+@media (max-width:900px){
+  .hero-in{grid-template-columns:1fr;padding:40px 20px 44px;gap:36px}
+  .sec-head{grid-template-columns:1fr;gap:20px}
+  .split,.two,.compare{grid-template-columns:1fr}
+  main{padding:0 20px}
+  section{padding-top:64px}
+  .nav ul a{padding:6px 7px;font-size:14.5px}
+  .brand{display:none}
+  .nav ul{margin-left:0}
+}
+@media (max-width:520px){
+  .pub{grid-template-columns:1fr;gap:4px}
+  .list li{grid-template-columns:1fr;gap:2px}
+  .pitch{font-size:19px}
+  .avatar{width:96px;height:96px}
+  .flow{width:28px}
+  .scope-grid{gap:6px}
+  .hero h1{font-size:clamp(28px,8.6vw,40px)}
+  .idrow{gap:16px}
+  .hire{padding:24px 22px}
+  .lb-prev,.lb-next{top:auto;bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .load,.reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+  .marquee{-webkit-mask-image:none;mask-image:none}
+  .track{flex-wrap:wrap;width:auto;gap:10px 0}
+  .track span[aria-hidden]{display:none}
+  .track span{white-space:normal}
+  .track span::after{margin:0 14px}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<nav class="nav" aria-label="Sections">
+  <div class="nav-in">
+    <a class="brand" href="#top">Md Shahin Ali</a>
+    <ul>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#talks">Talks</a></li>
+      <li><a href="#awards">Awards</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme" id="theme" aria-label="Switch color theme">◐</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-in">
+    <div>
+      <a class="seek load d1" href="#contact"><span class="dot"></span>Seeking a Summer 2027 MRI image reconstruction internship</a>
+      <div class="idrow load d1">
+        <div class="avatar"><img src="gallery/profile_headshot.jpg" alt="Headshot of Md Shahin Ali" onerror="this.onerror=null;this.src='images/portrait.jpg'"></div>
+        <h1>Md Shahin Ali</h1>
+      </div>
+      <p class="role load d2"><b>PhD Candidate</b> · Roy J. Carver Department of Biomedical Engineering<br>The University of Iowa · QDMRI Lab, advised by <a href="https://engineering.uiowa.edu/directory/sajan-goud-lingala" target="_blank" rel="noopener">Dr. Sajan Goud Lingala</a></p>
+      <p class="pitch load d3">Sleep apnea treatment depends on seeing how the airway collapses. I build self-supervised AI methods that make MRI fast enough to watch it happen, non-invasively and during natural sleep.</p>
+      <div class="ticker load d3" role="text" aria-label="Research interests: MRI image reconstruction, inverse problems, self-supervised learning, dynamic spiral MRI, sleep apnea imaging"><span>Working on</span>
+        <span class="win" aria-hidden="true"><span class="tl"><span>MRI image reconstruction</span><span>inverse problems</span><span>self-supervised learning</span><span>dynamic spiral MRI</span><span>sleep apnea imaging</span><span>MRI image reconstruction</span></span></span>
+      </div>
+      <div class="cta load d4">
+        <a class="btn primary" href="#publications">See publications</a>
+        <a class="btn ghost" href="cv.pdf">Download CV</a>
+        <a class="btn ghost" href="mailto:mdshahin-ali@uiowa.edu">Email me</a>
+      </div>
+      <nav class="profiles load d5" aria-label="Profiles" id="heroProfiles"></nav>
+    </div>
+    <div class="scope load d4" aria-label="Animation: spiral MRI sampling with 3 of 35 arms per frame and the reconstructed upper-airway image">
+      <div class="scope-grid">
+        <div class="panel"><canvas id="kspace" aria-hidden="true"></canvas></div>
+        <div class="flow" aria-hidden="true"><svg viewBox="0 0 48 24"><path class="shaft" d="M2 12H40"/><path class="head" d="M32 4l10 8-10 8"/></svg></div>
+        <div class="panel" id="imgPanel">
+          <img id="reconImg" src="images/airway-recon.gif" alt="Reconstructed dynamic upper-airway MRI, playing frame by frame" onerror="this.onerror=null;this.src='images/airway-recon.png'">
+        </div>
+      </div>
+      <div class="readout"><span>Arms used per frame <b>3 of 35</b></span><span>Data per frame <b>11.7× less</b></span></div>
+      <p>A fully sampled spiral image needs 35 arms. We collect only 3 per frame, which is fast enough to follow the airway as it collapses. Our self-supervised model reconstructs every frame from those 3 arms.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="research">
+  <div class="sec-head">
+    <h2 class="reveal">Research</h2>
+    <div class="sec-body">
+      <p class="lede reveal">In obstructive sleep apnea (OSA), the upper airway closes during sleep as the tongue and the soft palate (velum) lose muscle tone and collapse into the airway.</p>
+      <p class="reveal">A newer treatment, hypoglossal nerve stimulation (HNS), implants a device that senses breathing and stimulates the nerve controlling the base of the tongue during each inhalation, pushing the tongue forward to keep the airway open. It frees patients from wearing a CPAP mask all night, but it does not work for everyone. Patients whose airway collapses front to back respond well, while patients with circular (concentric) collapse have high failure rates. Choosing the right patients depends on seeing exactly how each airway collapses.</p>
+      <div class="compare reveal">
+        <div class="cmp old">
+          <h3>Today: drug-induced sleep endoscopy</h3>
+          <ul><li>Invasive</li><li>Performed under anesthesia</li><li>Collapse depends on the drug dose</li><li>High variability between readers</li><li>Cannot view all collapse sites at once</li></ul>
+        </div>
+        <div class="cmp new">
+          <h3>Our approach: dynamic MRI</h3>
+          <ul><li>Non-invasive</li><li>Works during natural sleep</li><li>Clear soft-tissue contrast</li><li>Covers the whole airway, velopharynx to hypopharynx, at once</li><li>Lets us measure the collapse quantitatively</li></ul>
+        </div>
+      </div>
+      <p class="reveal">Our lab develops MRI methods to measure these airway dynamics. I develop self-supervised deep learning methods for accelerated dynamic MRI: my PhD work uses spiral variational manifold learning to image upper-airway collapse in patients with OSA, including during natural sleep.</p>
+      <p class="reveal">This research is supported by NIH NHLBI grant R01 HL173483 and NIH-S10 instrumentation grant 1S10OD025025-01.</p>
+      <ul class="chips reveal">
+        <li>MRI image reconstruction</li><li>Inverse problems</li><li>Self-supervised and generative models</li><li>Dynamic and real-time MRI</li><li>Medical image and signal processing</li><li>Computer vision</li><li>Health informatics</li>
+      </ul>
+      <div class="split">
+        <article class="card now reveal">
+          <h3>Accelerated dynamic upper-airway MRI</h3>
+          <p class="meta">QDMRI Lab, Roy J. Carver Department of Biomedical Engineering, The University of Iowa · 2024 to present</p>
+          <p>Self-supervised spiral variational manifold learning for highly undersampled dynamic MRI, used to image where and how the pharyngeal airway collapses in sleep apnea. The work spans method development, sensitivity analysis, prospective validation, and multi-slice imaging.</p>
+        </article>
+        <article class="card reveal">
+          <h3>Deep learning for medical image classification</h3>
+          <p class="meta">Bio-Imaging Research Lab, Islamic University, Bangladesh · 2020 to 2024</p>
+          <p>Explainable deep learning for disease detection from images and signals, including skin cancer, brain tumors, Alzheimer's disease, lung abnormalities, COVID-19, monkeypox, colon cancer, eye disease, and atrial fibrillation.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="news">
+  <div class="sec-head">
+    <h2 class="reveal">News</h2>
+    <div class="sec-body"><ol class="timeline" id="newsList"></ol></div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec-head">
+    <h2 class="reveal">Experience</h2>
+    <div class="sec-body"><ol class="timeline" id="expList"></ol></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec-head">
+    <h2 class="reveal">Education</h2>
+    <div class="sec-body"><ol class="timeline" id="eduList"></ol></div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="sec-head">
+    <h2 class="reveal">Publications</h2>
+    <div class="sec-body">
+      <div class="filters" role="group" aria-label="Filter publications" id="filters">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="mri" aria-pressed="false">MRI research</button>
+        <button data-f="journal" aria-pressed="false">Journal articles</button>
+        <button data-f="conference" aria-pressed="false">Conferences</button>
+        <button data-f="chapter" aria-pressed="false">Book chapters</button>
+      </div>
+      <p class="count" id="count" aria-live="polite"></p>
+      <ol class="pubs" id="pubs"></ol>
+      <p class="count">* Corresponding author. Full list on <a href="https://scholar.google.com/citations?user=R35Lm8YAAAAJ&hl=en">Google Scholar</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="talks">
+  <div class="sec-head">
+    <h2 class="reveal">Talks &amp; meetings</h2>
+    <div class="sec-body"><ul class="list" id="talkList"></ul></div>
+  </div>
+</section>
+
+<section id="awards">
+  <div class="sec-head">
+    <h2 class="reveal">Awards &amp; service</h2>
+    <div class="sec-body">
+      <ul class="list" id="awardList"></ul>
+      <p class="marquee-label reveal">Peer reviewer for</p>
+      <div class="marquee reveal"><div class="track" id="track"></div></div>
+      <div style="margin-top:36px">
+        <div class="reveal">
+          <h3 class="small">Memberships</h3>
+          <ul class="plain">
+            <li>International Society for Magnetic Resonance in Medicine (ISMRM), Trainee Member (2024 to present)</li>
+            <li>Associated Professional Sleep Societies (APSS), Registered Member (2026)</li>
+            <li>Biomedical Engineering Society (BMES), Member (2026)</li>
+            <li>IEEE, Student Member (2021 to 2024)</li>
+          </ul>
+        </div>
+        <div class="reveal" style="margin-top:28px">
+          <h3 class="small">Skills</h3>
+          <ul class="plain">
+            <li>Languages: Python, MATLAB, R, C, C++</li>
+            <li>Frameworks: TensorFlow, Keras, scikit-learn, NumPy, Pandas, Matplotlib, Seaborn</li>
+            <li>Tools: LaTeX, SPSS, Microsoft Office</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="sec-head">
+    <h2 class="reveal">Gallery</h2>
+    <div class="sec-body">
+      <div class="filters gfilters" role="group" aria-label="Filter photos" id="gfilters">
+        <button data-g="all" aria-pressed="true">All</button>
+        <button data-g="conference" aria-pressed="false">Conferences</button>
+        <button data-g="people" aria-pressed="false">Friends &amp; colleagues</button>
+        <button data-g="portrait" aria-pressed="false">Portraits</button>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="sec-head">
+    <h2 class="reveal">Contact</h2>
+    <div class="sec-body">
+      <div class="hire reveal">
+        <h3>Open to a Summer 2027 internship</h3>
+        <p>I'm looking for an MRI image reconstruction internship in industry or a research lab. What I bring:</p>
+        <ul>
+          <li>Self-supervised and generative reconstruction for highly undersampled dynamic MRI</li>
+          <li>Non-Cartesian (spiral) acquisition and reconstruction</li>
+          <li>Prospective validation on patient data, from method to clinical question</li>
+          <li>Python, MATLAB, and deep learning frameworks</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <a class="big-mail" href="mailto:mdshahin-ali@uiowa.edu">mdshahin-ali@uiowa.edu</a>
+        <p class="addr" style="margin-top:18px;color:var(--muted);font-size:16px">Roy J. Carver Department of Biomedical Engineering, The University of Iowa, Iowa City, IA 52242</p>
+        <nav class="profiles" aria-label="Profiles" id="contactProfiles"></nav>
+      </div>
+      <div class="visitors reveal">
+        <h3 class="small">Visitors</h3>
+        <div class="vbox"><!-- PASTE FLAG COUNTER CODE HERE --></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer>© <span id="yr"></span> Md Shahin Ali · Last updated October 2026</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous photo">‹</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next photo">›</button>
+</div>
+
+<script>
+/* =========================================================
+   CONTENT: edit these lists to update the site
+   ========================================================= */
+const ME = "Md Shahin Ali";
+
+const PROFILES = [
+  {name:"LinkedIn", url:"https://www.linkedin.com/in/md-shahin-ali/", icon:"icons/linkedin.png"},
+  {name:"ResearchGate", url:"https://www.researchgate.net/profile/Md-Ali-177", icon:"icons/researchgate.png"},
+  {name:"Google Scholar", url:"https://scholar.google.com/citations?user=R35Lm8YAAAAJ&hl=en", icon:"icons/scholar.png", wide:true},
+  {name:"ORCID", url:"https://orcid.org/0000-0003-2564-8746", icon:"icons/orcid.png"},
+  {name:"Scopus", url:"https://www.scopus.com/authid/detail.uri?authorId=57225851312", icon:"icons/scopus.png", wide:true},
+  {name:"Web of Science", url:"https://www.webofscience.com/wos/author/record/AEV-7853-2022", icon:"icons/webofscience.png", wide:true}
+];
+
+const NEWS = [
+  ["Oct 2026","Paper accepted in <i>Magnetic Resonance in Medicine</i>."],
+  ["Oct 2026","BMES Annual Meeting, Orlando, FL (October 21–24)."],
+  ["Jun 2026","Two co-authored posters at SLEEP 2026 (APSS), Baltimore, MD."],
+  ["May 2026","Completed M.Sc. in Biomedical Engineering, Roy J. Carver Department of Biomedical Engineering, The University of Iowa."],
+  ["Apr 2026","First Place, Graduate Student Poster Award, UI College of Engineering Research Open House."],
+  ["Jan 2026","Presented at the ISMRM Workshop on Data Sampling &amp; Image Reconstruction, Sedona, AZ."],
+  ["May 2025","Presented at the ISMRM &amp; ISMRT Annual Meeting, Honolulu, HI."],
+  ["Aug 2024","Joined the QDMRI Lab at the University of Iowa as a PhD student."]
+];
+
+const EXPERIENCE = [
+  {when:"Aug 2024 – Present", role:"Graduate Research Assistant", org:"Laboratory of Quantitative and Dynamic MRI (QDMRI), Roy J. Carver Department of Biomedical Engineering, The University of Iowa",
+   noteHTML:'Supervisor: <a href="https://engineering.uiowa.edu/directory/sajan-goud-lingala" target="_blank" rel="noopener">Dr. Sajan Goud Lingala</a>. MR imaging, image reconstruction, signal processing, and deep learning.'},
+  {when:"Aug 2026 – Present", role:"Peer Mentor", org:"Graduate Peer-to-Peer (P2P) Mentor Program, The University of Iowa",
+   note:"Mentoring an incoming Ph.D. student through their first year of graduate school."},
+  {when:"Jun 2020 – Aug 2024", role:"Research Assistant", org:"Bio-Imaging Research Lab, Department of Biomedical Engineering, Islamic University, Bangladesh",
+   note:"Supervisor: Md Khairul Islam. Medical image processing, signal processing, machine learning, and health informatics."},
+  {when:"Oct – Nov 2022", role:"Instructor and Trainer", org:"Course: “Guidelines to be a Researcher to get a Scholarship,” Islamic University",
+   note:"Trained 50+ students.", link:["Course outline","https://drive.google.com/file/d/1aEaWHELTRYw_IljlzPD2zdCRc7NuEiLp/view?usp=sharing"]},
+  {when:"Jul 2021 – Aug 2022", role:"Chair", org:"IEEE Engineering in Medicine & Biology Society, Islamic University Student Branch"},
+  {when:"Jun 2021 – Dec 2022", role:"General Member", org:"IEEE Computer Society, Islamic University Student Branch"},
+  {when:"Jul 2021 – Dec 2021", role:"Student Ambassador", org:"Swift Consultancy Ltd, for Islamic University, Kushtia"},
+  {when:"Dec 2020 – Dec 2021", role:"Program Executive", org:"IEEE Islamic University Student Branch"}
+];
+
+const EDUCATION = [
+  {when:"Aug 2024 – Present", role:"Ph.D., Biomedical Engineering", org:"Roy J. Carver Department of Biomedical Engineering, The University of Iowa, Iowa City, Iowa, USA"},
+  {when:"Aug 2024 – May 2026", role:"M.Sc., Biomedical Engineering", org:"Roy J. Carver Department of Biomedical Engineering, The University of Iowa, Iowa City, Iowa, USA"},
+  {when:"Jan 2018 – Feb 2023", role:"B.Sc. (Engg.), Biomedical Engineering", org:"Islamic University, Kushtia, Bangladesh",
+   note:"GPA 3.65 / 4.00, ranked 4th of 43. Thesis: A hyper-tuned vision transformer model with explainable AI for eye disease detection and classification."},
+  {when:"2014 – 2016", role:"Higher Secondary Certificate (Science)", org:"Chuadanga Government College, Chuadanga, Bangladesh", note:"GPA 4.33 / 5.00"},
+  {when:"2009 – 2014", role:"Secondary School Certificate (Science)", org:"Damurhuda Pilot High School, Damurhuda, Chuadanga, Bangladesh", note:"GPA 5.00 / 5.00"},
+  {when:"Primary", role:"Primary education (Class 1–5)", org:"Chittla Government Primary School, Damurhuda, Chuadanga, Bangladesh"}
+];
+
+// type: journal | conference | chapter ; mri: MRI research ; star: corresponding author
+const PUBS = [
+  {y:2026,type:"journal",mri:true,status:"Accepted",t:"Improved upper-airway collapse imaging in obstructive sleep apnea using self-supervised spiral variational manifold learning",a:"Md Shahin Ali, Wahidul Alam, Mathews Jacob, Sarv Priya, Douglas Van Daele, Junjie Liu, Sajan Goud Lingala",v:"Magnetic Resonance in Medicine"},
+  {y:2026,type:"conference",mri:true,t:"Multi-slice dynamic upper-airway collapse imaging in obstructive sleep apnea with a spiral unsupervised generative manifold model",a:"Md Shahin Ali, Wahidul Alam, Bahaaaldin Mohammad, Mathews Jacob, Douglas Van Daele, Junjie Liu, Sajan Goud Lingala",v:"BMES Annual Meeting, Orlando, FL. Abstract #26AM-GA1290"},
+  {y:2026,type:"conference",mri:true,t:"Prospective validation of self-supervised spiral variational manifold learning for upper-airway collapse imaging",a:"Md Shahin Ali, Wahidul Alam, Bahaaaldin Mohammad, Mathews Jacob, Douglas Van Daele, Junjie Liu, Sajan Goud Lingala",v:"ISMRM Workshop on Data Sampling and Image Reconstruction, Sedona, AZ. Abstract #00243",url:"https://echo.ismrm.org/abstracts/view/98d6f8bd-452e-4b21-9633-6c5434e4c661",label:"Abstract"},
+  {y:2026,type:"conference",mri:true,t:"Dynamic upper airway MRI (DUAM) of OSA may be better than DISE for detecting complete concentric collapse",a:"Sajan G. Lingala, Nicholas E. Thedens, Md Shahin Ali, Douglas J. Van Daele, Aygun Asgarli, Junjie V. Liu",v:"SLEEP 2026, 40th Annual Meeting of the APSS, Baltimore, MD. Poster, Abstract #551"},
+  {y:2026,type:"conference",mri:true,t:"Dynamic upper airway MRI (DUAM) of OSA during natural sleep is suitable for clinical use",a:"Junjie V. Liu, Aygun Asgarli, Md Shahin Ali, Nicholas E. Thedens, Douglas J. Van Daele, Sajan G. Lingala",v:"SLEEP 2026, 40th Annual Meeting of the APSS, Baltimore, MD. Poster"},
+  {y:2025,type:"conference",mri:true,t:"Sensitivity analysis of self-supervised variational manifold learning based accelerated dynamic upper-airway collapse MRI",a:"Md Shahin Ali, Wahidul Alam, Mathews Jacob, Sajan Goud Lingala",v:"ISMRM & ISMRT Annual Meeting, Honolulu, HI. Abstract #2595",url:"https://archive.ismrm.org/2025/2595.html",label:"Abstract"},
+  {y:2024,type:"journal",t:"Enhancing and improving the performance of imbalanced class data using novel GBO and SSG: A comparative analysis",a:"Md Manjurul Ahsan, Md Shahin Ali, Zahed Siddique",v:"Neural Networks, vol. 173",doi:"10.1016/j.neunet.2024.106157"},
+  {y:2024,type:"journal",t:"Enhancing lung abnormalities diagnosis using hybrid DCNN-ViT-GRU model with explainable AI: A deep learning approach",a:"Md Khairul Islam, Md Mahbubur Rahman, Md Shahin Ali, S M Mahim, Md Sipon Miah",v:"Image and Vision Computing, vol. 145, 104918",doi:"10.1016/j.imavis.2024.104918"},
+  {y:2024,type:"journal",star:true,t:"Enhancing monkeypox diagnosis and explanation through modified transfer learning, vision transformers, and federated learning",a:"Md Manjurul Ahsan, Tasfiq E. Alam, Mohd Ariful Haque, Md Shahin Ali, Rakib Hossain Rifat, Abdullah Al Nomaan Nafi, Md. Maruf Hossain, Md Khairul Islam",v:"Informatics in Medicine Unlocked, vol. 45, 101449",doi:"10.1016/j.imu.2024.101449"},
+  {y:2024,type:"journal",t:"Unlocking the potential of XAI for improved Alzheimer's disease detection and classification using a ViT-GRU model",a:"S M Mahim, Md Shahin Ali, Md Olid Hasan, Abdullah Al Nomaan Nafi, Arefin Sadat, Shakib Al Hasan, Bryar Shareef, Md Manjurul Ahsan, Md Khairul Islam",v:"IEEE Access, vol. 12",doi:"10.1109/ACCESS.2024.3351809"},
+  {y:2023,type:"journal",t:"A novel approach for best parameters selection and feature engineering to analyze and detect diabetes: Machine learning insights",a:"Md Shahin Ali, Md Khairul Islam, A Arjan Das, D S Duranta, Mst Farija Haque, Md Habibur Rahman",v:"BioMed Research International",doi:"10.1155/2023/8583210"},
+  {y:2023,type:"journal",t:"Monkeypox diagnosis with interpretable deep learning",a:"Md Manjurul Ahsan, Md Shahin Ali, Md Mehedi Hassan, Tareque Abu Abdullah, Kishor Datta Gupta, Ulas Bagci, Chetna Kaushal, Naglaa F Soliman",v:"IEEE Access, vol. 11",doi:"10.1109/ACCESS.2023.3300793"},
+  {y:2023,type:"journal",t:"Deep transfer learning approaches for monkeypox disease diagnosis",a:"Md Manjurul Ahsan, Muhammad Ramiz Uddin, Md Shahin Ali, Md Khairul Islam, Mithila Farjana, Ahmed Nazmus Sakib, Khondhaker Al Momin, Shahana Akter Luna",v:"Expert Systems with Applications, vol. 216, 119483",doi:"10.1016/j.eswa.2022.119483"},
+  {y:2023,type:"journal",star:true,t:"Cardiovascular disease identification using a hybrid CNN-LSTM model with explainable AI",a:"Md. Maruf Hossain, Md Shahin Ali, Md. Mahfuz Ahmed, Md. Rakibul Hasan Rakib, Moutushi Akter Kona, Sadia Afrin, Md Khairul Islam, Md Manjurul Ahsan, Sheikh Md. Razibul Hasan Raj, Md Habibur Rahman",v:"Informatics in Medicine Unlocked",doi:"10.1016/j.imu.2023.101370"},
+  {y:2023,type:"journal",t:"Enhancing lung abnormalities detection and classification using a deep convolutional neural network and GRU with explainable AI",a:"Md Khairul Islam, Md Mahbubur Rahman, Md Shahin Ali, S M Mahim, Md Sipon Miah",v:"Machine Learning with Applications, vol. 13, 100492",doi:"10.1016/j.mlwa.2023.100492"},
+  {y:2023,type:"journal",t:"An enhanced technique of COVID-19 detection and classification using deep convolutional neural network from chest X-ray and CT images",a:"Md Khairul Islam, Md Mahbubur Rahman, Md Shahin Ali, Md Sipon Miah, Md Habibur Rahman",v:"BioMed Research International, vol. 2023, 6341259",doi:"10.1155/2023/6341259"},
+  {y:2023,type:"journal",t:"Enhancing atrial fibrillation detection accuracy: A wavelet transform filtered single lead ECG signal analysis with artificial neural networks and novel feature extraction",a:"D U S Duranta, Md Shahin Ali, Abhilash Arjan Das, Md Mahbubur Rahman, Md Manjurul Ahsan, Md Sipon Miah, Md Khairul Islam",v:"Machine Learning with Applications",doi:"10.1016/j.mlwa.2023.100472"},
+  {y:2023,type:"journal",t:"Efficient deep learning-based data-centric approach for autism spectrum disorder diagnosis from facial images using explainable AI",a:"Mohammad Shafiul Alam, Muhammad Mahbubur Rashid, Ahmed Rimaz Faizabadi, Hasan Firdaus Mohd Zaki, Tasfiq E. Alam, Md Shahin Ali, Kishor Datta Gupta, Md Manjurul Ahsan",v:"Technologies, 11, 115",doi:"10.3390/technologies11050115"},
+  {y:2023,type:"conference",t:"A hyper-tuned vision transformer model with explainable AI for eye disease detection and classification from retinal images",a:"Md Shahin Ali, Md. Maruf Hossain, Rubaya Nowrin, Md. Rakibul Islam, Md. Mahfuz Ahmed, Lamia Tasnim, Md. Mahbubur Rahman, Md. Khairul Islam",v:"ICTBJ-2023, Bangladesh. Oral presentation"},
+  {y:2023,type:"chapter",t:"Active learning on medical image",a:"Angona Biswas, Nasim Md Abdullah Al, Md Shahin Ali, Ismail Hossain, Md Azim Ullah, Sajedul Talukder",v:"Data Driven Approaches on Medical Imaging, Springer, pp. 51–67",doi:"10.1007/978-3-031-47772-0_3"},
+  {y:2023,type:"chapter",t:"Few shot learning for medical imaging: A comparative analysis of methodologies and formal mathematical framework",a:"Jannatul Nayem, Sayed Sahriar Hasan, Noshin Amina, Bristy Das, Md Shahin Ali, Md Manjurul Ahsan, Shivakumar Raman",v:"Data Driven Approaches on Medical Imaging, Springer, pp. 69–90",doi:"10.1007/978-3-031-47772-0_4"},
+  {y:2023,type:"chapter",t:"Case studies on X-ray imaging, MRI and nuclear imaging",a:"Angona Biswas, Nasim Md Abdullah Al, Md Shahin Ali, Ismail Hossain, Md Azim Ullah, Sajedul Talukder",v:"Data Driven Approaches on Medical Imaging, Springer, pp. 207–225",doi:"10.1007/978-3-031-47772-0_10"},
+  {y:2022,type:"journal",t:"Automated detection and characterization of colon cancer with deep convolutional neural networks",a:"Md Imran Hasan, Md Shahin Ali, Md Habibur Rahman, Md Khairul Islam",v:"Journal of Healthcare Engineering, vol. 2022, 5269913",doi:"10.1155/2022/5269913"},
+  {y:2021,type:"journal",t:"An enhanced technique of skin cancer classification using deep convolutional neural network with transfer learning models",a:"Md Shahin Ali, Md Sipon Miah, Jahurul Haque, Md Mahbubur Rahman, Md Khairul Islam",v:"Machine Learning with Applications, vol. 5, 100036",doi:"10.1016/j.mlwa.2021.100036"},
+  {y:2021,type:"journal",t:"Brain tumor detection in MR image using superpixels, principal component analysis and template based K-means clustering algorithm",a:"Md Khairul Islam, Md Shahin Ali, Md Sipon Miah, Md Mahbubur Rahman, Md Shahariar Alam, Mohammad Amzad Hossain",v:"Machine Learning with Applications, vol. 5, 100044",doi:"10.1016/j.mlwa.2021.100044"},
+  {y:2021,type:"conference",t:"Alzheimer's disease detection using m-random forest algorithm with optimum features extraction",a:"Md Shahin Ali, Md. Khairul Islam, Jahurul Haque, A Arjan Das, D S Duranta, Md Ariful Islam",v:"1st International Conference on Artificial Intelligence and Data Analytics (CAIDA), IEEE, pp. 1–6",doi:"10.1109/CAIDA51941.2021.9425212"},
+  {y:2021,type:"conference",t:"Melanoma skin lesions classification using deep convolutional neural network with transfer learning",a:"Md. Khairul Islam, Md Shahin Ali, Md Mosahak Ali, Mst. Farija Haque, Abhilash Arjan Das, Md. Maruf Hossain, D S Duranta, Md Afifur Rahman",v:"1st International Conference on Artificial Intelligence and Data Analytics (CAIDA), IEEE, pp. 48–53",doi:"10.1109/CAIDA51941.2021.9425117"}
+];
+
+const TALKS = [
+  ["Oct 2026","BMES Annual Meeting","Orlando, FL, USA. Abstract #26AM-GA1290"],
+  ["Jun 2026","SLEEP 2026, 40th Annual Meeting of the APSS","Baltimore, MD, USA. Co-author on two posters"],
+  ["Jan 2026","ISMRM Workshop on Data Sampling & Image Reconstruction","Sedona, AZ, USA. Abstract #00243"],
+  ["May 2025","ISMRM & ISMRT Annual Meeting & Exhibition","Honolulu, HI, USA. Abstract #2595"],
+  ["Jun 2023","International Conference on Technology, Business and Justice towards Smart Bangladesh (ICTBJ-2023)","Presenter, papers S-29 and S-33"],
+  ["Apr 2021","1st International Conference on Artificial Intelligence & Data Analytics (CAIDA)","Prince Sultan University, Riyadh, Saudi Arabia. Oral presenter, papers 001 and 039"],
+  ["Dec 2020","1st International Conference on Big Data and Machine Learning (BDML), workshop","CUET, Chittagong, Bangladesh. Presenter"],
+  ["Nov 2020","IEEE Computer Society Bangladesh Chapter Winter Symposium","Presenter, paper 92"]
+];
+
+const AWARDS = [
+  ["Apr 2026","First Place, Graduate Student Poster Award (Biomedical Engineering)","College of Engineering Research Open House, The University of Iowa"],
+  ["2024","Krishnan B. Chandran Graduate Student Travel Award","Roy J. Carver Department of Biomedical Engineering, The University of Iowa"],
+  ["B.Sc.","University Merit Scholarships","Islamic University, Bangladesh"],
+  ["2011","National Board Scholarship","Junior School Certificate Examination"],
+  ["2008","National Board Scholarship","Primary School Certificate Examination"]
+];
+
+const REVIEWER = ["IEEE Access","Artificial Intelligence Review","Biomedical Signal Processing and Control","Visual Computing for Industry, Biomedicine, and Art","Informatics in Medicine Unlocked","Machine Learning with Applications","International Journal of Imaging Systems and Technology","Journal of Digital Imaging","The Imaging Science Journal","MethodsX","MIET 2022 (Springer Nature)"];
+
+// cat: conference | people | portrait
+const PHOTOS = [
+  ["gallery/photo-01.jpg","conference","ICTBJ-2023, Nazrul University, Bangladesh"],
+  ["gallery/photo-02.jpg","conference","With keynote speaker Dr. Hartini Saripan, ICTBJ-2023"],
+  ["gallery/photo-03.jpg","conference","With the session chair, ICTBJ-2023"],
+  ["gallery/photo-04.jpg","conference","Presenting at ICTBJ-2023"],
+  ["gallery/photo-05.jpg","conference","Receiving a certificate, ICTBJ-2023"],
+  ["gallery/photo-06.jpg","conference","ICTBJ-2023"],
+  ["gallery/photo-07.jpg","portrait",""],
+  ["gallery/photo-08.jpg","portrait",""],
+  ["gallery/photo-09.jpg","people",""],
+  ["gallery/photo-10.jpg","people","Biomedical Engineering, Islamic University"],
+  ["gallery/photo-11.jpg","people",""],
+  ["gallery/photo-12.jpg","people",""],
+  ["gallery/photo-13.jpg","people","Biomedical Engineering, Islamic University"],
+  ["gallery/photo-14.jpg","conference","ICTBJ-2023"],
+  ["gallery/photo-15.jpg","portrait",""],
+  ["gallery/photo-16.jpg","portrait",""],
+  ["gallery/photo-17.jpg","people",""],
+  ["gallery/photo-18.jpg","portrait",""],
+  ["gallery/photo-19.jpg","people",""]
+];
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&(?!amp;|#)/g,"&amp;").replace(/</g,"&lt;");
+
+const profHTML = PROFILES.map(p =>
+  `<a href="${p.url}" ${p.url.startsWith("http")?'target="_blank" rel="noopener"':""} class="${p.wide?"wide":""}" title="${p.name}" aria-label="${p.name}"><img src="${p.icon}" alt="${p.name}" onerror="this.outerHTML='<span class=&quot;fb&quot;>${p.name}</span>'"></a>`).join("");
+$("#heroProfiles").innerHTML = profHTML;
+$("#contactProfiles").innerHTML = profHTML;
+
+$("#newsList").innerHTML = NEWS.map(([d,w]) =>
+  `<li class="reveal"><span class="when">${d}</span><span class="what">${w}</span></li>`).join("");
+
+const tItem = e => `<li class="reveal"><span class="when">${esc(e.when)}</span><h3>${esc(e.role)}</h3>
+  <p class="org">${esc(e.org)}</p>${e.note?`<p class="note">${esc(e.note)}</p>`:""}${e.noteHTML?`<p class="note">${e.noteHTML}</p>`:""}
+  ${e.link?`<p class="note"><a href="${e.link[1]}" target="_blank" rel="noopener">${esc(e.link[0])}</a></p>`:""}</li>`;
+$("#expList").innerHTML = EXPERIENCE.map(tItem).join("");
+$("#eduList").innerHTML = EDUCATION.map(tItem).join("");
+
+$("#pubs").innerHTML = PUBS.map(p => {
+  const link = p.doi ? `<a class="doi" href="https://doi.org/${p.doi}">DOI</a>` : p.url ? `<a class="doi" href="${p.url}">${p.label||"Link"}</a>` : "";
+  const badge = p.status ? `<span class="badge">${p.status}</span>` : "";
+  return `<li class="pub" data-type="${p.type}" data-mri="${!!p.mri}"><span class="yr">${p.y}</span>
+    <div><p class="ttl">${esc(p.t)}</p><p class="au">${esc(p.a).replace(ME,`<b>${ME}${p.star?"*":""}</b>`)}</p>
+    <p class="ven">${esc(p.v)}${badge}${link}</p></div></li>`;
+}).join("");
+
+const rows = list => list.map(([d,t,s]) => `<li class="reveal"><span class="d">${esc(d)}</span><span class="t">${esc(t)}<small>${esc(s)}</small></span></li>`).join("");
+$("#talkList").innerHTML = rows(TALKS);
+$("#awardList").innerHTML = rows(AWARDS);
+const rev = REVIEWER.map(r=>`<span>${esc(r)}</span>`).join("");
+$("#track").innerHTML = rev + rev.replace(/<span>/g,'<span aria-hidden="true">');
+$("#yr").textContent = new Date().getFullYear();
+
+$("#grid").innerHTML = PHOTOS.map(([src,cat,cap],i) =>
+  `<figure data-cat="${cat}" class="reveal"><button data-i="${i}" aria-label="Open photo${cap?": "+esc(cap):""}"><img src="${src}" alt="${esc(cap||"Photo of Md Shahin Ali")}" loading="lazy"></button>${cap?`<figcaption>${esc(cap)}</figcaption>`:""}</figure>`).join("");
+
+/* filters */
+const pubEls = [...document.querySelectorAll(".pub")];
+function applyFilter(f){
+  let n=0;
+  pubEls.forEach(el=>{
+    const show = f==="all" || (f==="mri" ? el.dataset.mri==="true" : el.dataset.type===f);
+    el.classList.toggle("hide",!show);
+    if(show){n++;el.classList.add("enter");requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.remove("enter")));}
+  });
+  $("#count").textContent = `Showing ${n} of ${pubEls.length}`;
+}
+function wireFilter(groupSel, attr, fn){
+  $(groupSel).addEventListener("click", e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    $(groupSel).querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+    fn(b.dataset[attr]);
+  });
+}
+wireFilter("#filters","f",applyFilter); applyFilter("all");
+const figs=[...document.querySelectorAll("#grid figure")];
+wireFilter("#gfilters","g",g=>figs.forEach(f=>{ f.classList.toggle("hide", g!=="all" && f.dataset.cat!==g); f.classList.add("in"); }));
+
+/* lightbox */
+const lb=$("#lightbox"), lbImg=$("#lbImg"), lbCap=$("#lbCap"); let cur=0, lastFocus=null;
+const visible=()=>figs.map((f,i)=>f.classList.contains("hide")?-1:i).filter(i=>i>=0);
+function show(i){ cur=i; const [src,,cap]=PHOTOS[i]; lbImg.src=src; lbImg.alt=cap||"Photo of Md Shahin Ali"; lbCap.textContent=cap; lbImg.style.animation="none"; lbImg.offsetHeight; lbImg.style.animation=""; }
+function step(d){ const v=visible(); const k=v.indexOf(cur); show(v[(k+d+v.length)%v.length]); }
+$("#grid").addEventListener("click",e=>{ const b=e.target.closest("button"); if(!b) return; lastFocus=b; show(+b.dataset.i); lb.classList.add("open"); document.body.style.overflow="hidden"; $("#lbClose").focus(); });
+function closeLb(){ lb.classList.remove("open"); document.body.style.overflow=""; lastFocus&&lastFocus.focus(); }
+$("#lbClose").onclick=closeLb; $("#lbPrev").onclick=()=>step(-1); $("#lbNext").onclick=()=>step(1);
+lb.addEventListener("click",e=>{ if(e.target===lb) closeLb(); });
+addEventListener("keydown",e=>{ if(!lb.classList.contains("open")) return; if(e.key==="Escape") closeLb(); if(e.key==="ArrowLeft") step(-1); if(e.key==="ArrowRight") step(1); });
+let tx=null; lb.addEventListener("touchstart",e=>tx=e.touches[0].clientX,{passive:true});
+lb.addEventListener("touchend",e=>{ if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50) step(dx<0?1:-1); tx=null; });
+
+/* scroll effects */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+const tls=[...document.querySelectorAll(".timeline")], bar=$("#progress");
+function onScroll(){
+  const vh=innerHeight;
+  tls.forEach(tl=>{ const r=tl.getBoundingClientRect(); const p=Math.min(1,Math.max(0,(vh*.75-r.top)/r.height)); tl.style.setProperty("--grow",(p*100).toFixed(1)+"%"); });
+  const h=document.documentElement; bar.style.transform=`scaleX(${h.scrollTop/(h.scrollHeight-h.clientHeight)||0})`;
+}
+addEventListener("scroll",onScroll,{passive:true}); onScroll();
+const navLinks=[...document.querySelectorAll(".nav ul a")];
+const secIO=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) navLinks.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id)); }),{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("main section").forEach(s=>secIO.observe(s));
+
+/* theme */
+const root=document.documentElement;
+try{ const t=localStorage.getItem("theme"); if(t) root.dataset.theme=t; }catch(e){}
+$("#theme").addEventListener("click",()=>{
+  const dark=root.dataset.theme ? root.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme=dark?"light":"dark"; try{ localStorage.setItem("theme",root.dataset.theme); }catch(e){}
+});
+
+/* =========================================================
+   HERO: 3-of-35 spiral arms per frame, golden-angle rotation
+   ========================================================= */
+(function(){
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const kc=$("#kspace"), kx=kc.getContext("2d");
+  const ARMS=3, FULL=35, TURNS=3, GOLD=Math.PI*(3-Math.sqrt(5)), FRAME_MS=420;
+  function size(){ const d=Math.min(2,devicePixelRatio||1); kc.width=kc.height=Math.max(1,Math.round(kc.clientWidth*d)); }
+  function arm(rot,j,w,end){
+    kx.beginPath();
+    for(let s=0;s<=260*end;s++){ const t=Math.sqrt(s/260), r=t*w*.44, th=2*Math.PI*TURNS*t+2*Math.PI*j/ARMS+rot;
+      const x=w/2+r*Math.cos(th), y=w/2+r*Math.sin(th); s?kx.lineTo(x,y):kx.moveTo(x,y); }
+    kx.stroke();
+  }
+  const trail=[];
+  function draw(frame,frac){
+    const w=kc.width; kx.fillStyle="#000"; kx.fillRect(0,0,w,w);
+    kx.lineWidth=Math.max(.6,w/700); kx.strokeStyle="rgba(140,153,165,.10)";
+    for(let j=0;j<FULL;j++){ kx.beginPath(); for(let s=0;s<=200;s++){ const t=Math.sqrt(s/200), r=t*w*.44, th=2*Math.PI*TURNS*t+2*Math.PI*j/FULL; const x=w/2+r*Math.cos(th), y=w/2+r*Math.sin(th); s?kx.lineTo(x,y):kx.moveTo(x,y);} kx.stroke(); }
+    trail.forEach((rot,i)=>{ kx.strokeStyle=`rgba(255,205,0,${.07+.06*i})`; kx.lineWidth=Math.max(1,w/320); for(let j=0;j<ARMS;j++) arm(rot,j,w,1); });
+    kx.strokeStyle="#FFCD00"; kx.lineWidth=Math.max(1.6,w/150); kx.shadowColor="rgba(255,205,0,.7)"; kx.shadowBlur=w/28;
+    for(let j=0;j<ARMS;j++) arm(frame*GOLD,j,w,frac);
+    kx.shadowBlur=0;
+  }
+  size(); addEventListener("resize",()=>{ size(); if(reduce) draw(0,1); });
+  if(reduce){ draw(0,1); return; }
+  let visible=true; new IntersectionObserver(es=>visible=es[0].isIntersecting).observe(kc);
+  let t0=performance.now(), frame=0;
+  function loop(now){
+    requestAnimationFrame(loop);
+    if(!visible||document.hidden){ t0=now; return; }
+    if(now-t0>=FRAME_MS){ t0=now; trail.push(frame*GOLD); if(trail.length>5) trail.shift(); frame++; }
+    draw(frame, Math.min(1,(now-t0)/(FRAME_MS*.75)));
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
