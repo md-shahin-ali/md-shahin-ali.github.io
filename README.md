@@ -1,4 +1,4 @@
-# Md Shahin Ali: Personal Academic Website
+# Personal Academic Website
 
 🌐 **Live site:** [md-shahin-ali.github.io](https://md-shahin-ali.github.io)
 
